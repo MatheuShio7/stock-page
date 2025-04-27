@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# Frontend do Protótipo da Página de Ações
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este é o frontend para o protótipo da página de informações da ação PETR4, desenvolvido com React.
 
-## Available Scripts
+## Requisitos
 
-In the project directory, you can run:
+- Node.js 14+
+- npm ou yarn
 
-### `npm start`
+## Estrutura do Projeto
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- `src/components/` - Componentes reutilizáveis
+- `src/layouts/` - Layouts da aplicação
+- `src/pages/` - Páginas da aplicação
+- `src/services/` - Serviços para comunicação com a API
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Componentes principais
 
-### `npm test`
+- `Sidebar` - Menu lateral de navegação
+- `Header` - Cabeçalho com botão de voltar para carteira
+- `StockHeader` - Informações básicas da ação (ticker, nome, preço)
+- `StockChart` - Gráfico com histórico de preços
+- `DividendHistory` - Tabela com histórico de proventos
+- `StockObservations` - Componente para adicionar e visualizar observações
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Configuração
 
-### `npm run build`
+1. Instale as dependências:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Inicie o servidor de desenvolvimento:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+npm start
+```
 
-### `npm run eject`
+O frontend estará disponível em: http://localhost:3000
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Funcionalidades
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Visualização das informações da ação PETR4
+- Gráfico de preços históricos
+- Visualização de proventos
+- Adição e visualização de observações
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Observações
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Este é um protótipo simplificado que carrega apenas a ação PETR4
+- Os botões do menu lateral são apenas visuais, sem funcionalidade real
+- O botão "Voltar para Carteira" não tem funcionalidade real
+- A interface foi simplificada, removendo o roteamento para facilitar o protótipo
