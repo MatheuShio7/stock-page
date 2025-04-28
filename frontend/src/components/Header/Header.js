@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const HeaderContainer = styled.header`
-  background-color: #FFF;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #0D0F14;
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
@@ -18,52 +17,37 @@ const BackButton = styled.button`
   border: none;
   display: flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  color: #0A1929;
+  color: #FF5722;
   cursor: pointer;
   padding: 8px 12px;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #232631;
     border-radius: 4px;
+  }
+
+  i {
+    font-size: 20px;
   }
 
   span {
     margin-left: 8px;
+    color: #FF5722;
+    font-size: 18px;
   }
-`;
-
-const UserSection = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const UserAvatar = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #0A1929;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  margin-left: 15px;
 `;
 
 const Header = () =>
 {
-    return (
-        <HeaderContainer>
-            <BackButton>
-                ← <span>Voltar para Carteira</span>
-            </BackButton>
-            <UserSection>
-                <UserAvatar>JD</UserAvatar>
-            </UserSection>
-        </HeaderContainer>
-    );
+  return (
+    <HeaderContainer>
+      <BackButton>
+        <i className="bi bi-chevron-left"></i> <span>Carteira / Explorar</span>
+      </BackButton>
+    </HeaderContainer>
+  );
 };
 
 export default Header; 

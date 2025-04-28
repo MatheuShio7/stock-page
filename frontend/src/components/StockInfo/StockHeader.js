@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StockHeaderContainer = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+  margin-top: -30px;
 `;
 
 const StockTitle = styled.div`
@@ -12,17 +13,9 @@ const StockTitle = styled.div`
 `;
 
 const Ticker = styled.h1`
-  font-size: 28px;
+  font-size: 100px;
   font-weight: bold;
-  margin-right: 12px;
-  margin-bottom: 0;
-`;
-
-const Company = styled.h2`
-  font-size: 18px;
-  font-weight: normal;
-  color: #5A6A7A;
-  margin-bottom: 0;
+  color: #171A23;
 `;
 
 const StockPrice = styled.div`
@@ -31,17 +24,18 @@ const StockPrice = styled.div`
 `;
 
 const CurrentPrice = styled.div`
-  font-size: 36px;
+  font-size: 25px;
   font-weight: bold;
   margin-right: 15px;
+  color: #FFFFFF;
 `;
 
 const PriceChange = styled.div`
   font-size: 16px;
   padding: 4px 10px;
   border-radius: 6px;
-  background-color: ${props => props.$isPositive ? '#E6F7EB' : '#FEEEEE'};
-  color: ${props => props.$isPositive ? '#1E8E3E' : '#D93025'};
+  background-color: ${props => props.$isPositive ? '#1A3A29' : '#3A1A1A'};
+  color: ${props => props.$isPositive ? '#00C853' : '#FF5252'};
   display: flex;
   align-items: center;
 `;
@@ -50,21 +44,24 @@ const Arrow = styled.span`
   margin-right: 5px;
 `;
 
-const StockHeader = ({ ticker, name, price, changePercent }) =>
+const StockHeader = ({ ticker, price, changePercent }) =>
 {
-  const isPositive = changePercent >= 0;
+  // Garantir que temos valores válidos
+  const safePrice = price || 0;
+  const safeChange = changePercent || 0;
+
+  const isPositive = safeChange >= 0;
   const formattedPrice = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL'
-  }).format(price);
+  }).format(safePrice);
 
-  const formattedChange = changePercent.toFixed(2);
+  const formattedChange = safeChange.toFixed(2);
 
   return (
     <StockHeaderContainer>
       <StockTitle>
         <Ticker>{ticker}</Ticker>
-        <Company>{name}</Company>
       </StockTitle>
       <StockPrice>
         <CurrentPrice>{formattedPrice}</CurrentPrice>

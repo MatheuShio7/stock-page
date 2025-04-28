@@ -1,138 +1,145 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { addObservacao } from '../../services/api';
+import { addObservacao, fetchObservacoes, atualizarObservacao, deletarObservacao } from '../../services/api';
 
 const Container = styled.div`
-  background-color: white;
+  background-color: #171A23;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   margin-bottom: 30px;
 `;
 
 const Title = styled.h3`
   font-size: 18px;
   margin: 0 0 20px;
-`;
-
-const ObservationForm = styled.form`
-  margin-bottom: 20px;
+  color: #FFFFFF;
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
   padding: 12px;
-  border: 1px solid #E0E0E0;
-  border-radius: 4px;
+  border: 1px solid #333;
+  border-radius: 8px;
   resize: vertical;
   min-height: 80px;
-  margin-bottom: 10px;
   font-family: inherit;
+  background-color: #232631;
+  color: #FFFFFF;
   
   &:focus {
     outline: none;
-    border-color: #2E7DD1;
-  }
-`;
-
-const SubmitButton = styled.button`
-  background-color: #2E7DD1;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 16px;
-  font-weight: bold;
-  cursor: pointer;
-  
-  &:hover {
-    background-color: #1E6CB8;
+    border-color: #FF5722;
   }
   
-  &:disabled {
-    background-color: #A0AEC0;
-    cursor: not-allowed;
+  &::placeholder {
+    color: #999;
   }
 `;
 
-const ObservationsList = styled.div`
-  margin-top: 20px;
-`;
-
-const ObservationItem = styled.div`
-  border-bottom: 1px solid #E0E0E0;
-  padding: 15px 0;
-  
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const ObservationText = styled.p`
-  margin: 0;
-  line-height: 1.5;
-`;
-
-const EmptyMessage = styled.div`
-  padding: 20px 0;
-  text-align: center;
-  color: #5A6A7A;
-`;
-
-const StockObservations = ({ acaoId, observacoes, onObservacaoAdded }) =>
+const StockObservations = ({ acaoId }) =>
 {
-    const [texto, setTexto] = useState('');
-    const [loading, setLoading] = useState(false);
+  const [texto, setTexto] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [observacaoAtual, setObservacaoAtual] = useState(null);
+  const timeoutRef = useRef(null);
 
-    const handleSubmit = async (e) =>
+  // Buscar observações existentes
+  useEffect(() =>
+  {
+    const fetchObservacaoAtual = async () =>
     {
-        e.preventDefault();
+      try
+      {
+        const observacoes = await fetchObservacoes(acaoId);
+        // Ignorar a observação padrão sobre a Petrobras
+        const observacoesFiltradas = observacoes.filter(
+          obs => obs.texto !== 'Ação da Petrobras com forte presença no mercado brasileiro. Pagamento de dividendos consistente.'
+        );
 
-        if (!texto.trim()) return;
-
-        setLoading(true);
-        try
+        // Se houver outras observações, pegar a mais recente
+        if (observacoesFiltradas.length > 0)
         {
-            const novaObservacao = await addObservacao(acaoId, texto);
-            onObservacaoAdded(novaObservacao);
-            setTexto('');
-        } catch (error)
-        {
-            console.error('Erro ao adicionar observação:', error);
-            alert('Erro ao adicionar observação. Tente novamente.');
-        } finally
-        {
-            setLoading(false);
+          const ultimaObservacao = observacoesFiltradas[0];
+          setObservacaoAtual(ultimaObservacao);
+          setTexto(ultimaObservacao.texto);
         }
+      } catch (error)
+      {
+        console.error('Erro ao buscar observações:', error);
+      }
     };
 
-    return (
-        <Container>
-            <Title>Observações</Title>
+    fetchObservacaoAtual();
+  }, [acaoId]);
 
-            <ObservationForm onSubmit={handleSubmit}>
-                <TextArea
-                    value={texto}
-                    onChange={(e) => setTexto(e.target.value)}
-                    placeholder="Adicione uma observação sobre esta ação..."
-                />
-                <SubmitButton type="submit" disabled={!texto.trim() || loading}>
-                    {loading ? 'Enviando...' : 'Adicionar Observação'}
-                </SubmitButton>
-            </ObservationForm>
+  // Função para salvar a observação após um tempo sem digitar
+  const salvarObservacao = async (text) =>
+  {
+    if (!text.trim()) return;
 
-            <ObservationsList>
-                {observacoes && observacoes.length > 0 ? (
-                    observacoes.map((obs) => (
-                        <ObservationItem key={obs.id}>
-                            <ObservationText>{obs.texto}</ObservationText>
-                        </ObservationItem>
-                    ))
-                ) : (
-                    <EmptyMessage>Nenhuma observação registrada para esta ação.</EmptyMessage>
-                )}
-            </ObservationsList>
-        </Container>
-    );
+    try
+    {
+      if (observacaoAtual)
+      {
+        // Atualizar a observação existente
+        const observacaoAtualizada = await atualizarObservacao(observacaoAtual.id, text);
+        setObservacaoAtual(observacaoAtualizada);
+      } else
+      {
+        // Criar uma nova observação
+        const novaObservacao = await addObservacao(acaoId, text);
+        setObservacaoAtual(novaObservacao);
+      }
+    } catch (error)
+    {
+      console.error('Erro ao salvar observação:', error);
+    }
+  };
+
+  // Configura um temporizador para salvar a observação
+  useEffect(() =>
+  {
+    if (isTyping)
+    {
+      if (timeoutRef.current)
+      {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() =>
+      {
+        salvarObservacao(texto);
+        setIsTyping(false);
+      }, 1500); // Salvar 1.5 segundos após parar de digitar
+    }
+
+    return () =>
+    {
+      if (timeoutRef.current)
+      {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [texto, isTyping, acaoId, observacaoAtual]);
+
+  const handleTextChange = (e) =>
+  {
+    setTexto(e.target.value);
+    setIsTyping(true);
+  };
+
+  return (
+    <Container>
+      <Title>Observações</Title>
+
+      <TextArea
+        value={texto}
+        onChange={handleTextChange}
+        placeholder="Digite observações sobre a AÇÃO4"
+      />
+    </Container>
+  );
 };
 
 export default StockObservations; 

@@ -7,7 +7,8 @@ Este é o backend para o protótipo da página de informações de ações, espe
 - Python 3.10+
 - Django 5.2
 - Django REST Framework
-- yfinance (para obter dados do Yahoo Finance)
+- BeautifulSoup4 (para web scraping do Google Finance)
+- Requests
 
 ## Configuração
 
@@ -53,19 +54,20 @@ python manage.py runserver
 
 - `GET /api/acoes/` - Lista todas as ações
 - `GET /api/acoes/1/` - Detalhes da ação PETR4
-- `GET /api/acoes/1/info/` - Informações detalhadas da ação (dados do Yahoo Finance ou dados fictícios)
+- `GET /api/acoes/1/info/` - Informações detalhadas da ação (dados do Google Finance via web scraping)
 - `GET /api/acoes/1/observacoes/` - Lista todas as observações da ação
 - `POST /api/acoes/1/adicionar_observacao/` - Adiciona uma observação à ação
 
 ## Observações
 
-- Se a API do Yahoo Finance falhar, o sistema fornecerá dados fictícios para a ação PETR4
+- Os dados da ação são obtidos através de web scraping do Google Finance
+- Os dados históricos e dividendos são gerados como dados fictícios para o protótipo
 - O backend está configurado para funcionar exclusivamente como um protótipo e não para uso em produção
 
 ## Estrutura do Projeto
 
 - `acoes/models.py` - Define os modelos Acao e ObservacaoAcao
-- `acoes/views.py` - Contém a lógica da API, incluindo integração com Yahoo Finance
+- `acoes/views.py` - Contém a lógica da API, incluindo o web scraping do Google Finance
 - `acoes/serializers.py` - Serializers para converter os modelos para JSON
 - `acoes/urls.py` - Definição das rotas da API
 - `acoes/management/commands/cria_petr4.py` - Comando para criar a ação PETR4 no banco de dados 

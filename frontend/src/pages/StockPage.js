@@ -5,22 +5,33 @@ import StockHeader from '../components/StockInfo/StockHeader';
 import StockChart from '../components/StockInfo/StockChart';
 import DividendHistory from '../components/StockInfo/DividendHistory';
 import StockObservations from '../components/StockInfo/StockObservations';
+import StockQuantity from '../components/StockInfo/StockQuantity';
 import { fetchAcaoById, fetchAcaoInfo, fetchObservacoes } from '../services/api';
 
 const PageContainer = styled.div`
   max-width: 1200px;
 `;
 
+const WidgetRow = styled.div`
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+`;
+
+const WidgetColumn = styled.div`
+  flex: 1;
+`;
+
 const LoadingMessage = styled.div`
   text-align: center;
   font-size: 18px;
   margin-top: 50px;
-  color: #5A6A7A;
+  color: #999;
 `;
 
 const ErrorMessage = styled.div`
-  background-color: #FEEEEE;
-  color: #D93025;
+  background-color: #3A1A1A;
+  color: #FF5252;
   padding: 15px;
   border-radius: 8px;
   margin: 20px 0;
@@ -95,20 +106,23 @@ const StockPage = () =>
                     <>
                         <StockHeader
                             ticker={acaoInfo.ticker}
-                            name={acaoInfo.nome}
                             price={acaoInfo.preco_atual}
                             changePercent={acaoInfo.variacao_dia}
                         />
 
                         <StockChart data={acaoInfo.historical_data} />
 
-                        <DividendHistory dividends={acaoInfo.dividends} />
-
-                        <StockObservations
-                            acaoId={acao.id}
-                            observacoes={observacoes}
-                            onObservacaoAdded={handleObservacaoAdded}
-                        />
+                        <WidgetRow>
+                            <WidgetColumn>
+                                <DividendHistory dividends={acaoInfo.dividends} />
+                            </WidgetColumn>
+                            <WidgetColumn>
+                                <StockQuantity />
+                                <StockObservations
+                                    acaoId={acao.id}
+                                />
+                            </WidgetColumn>
+                        </WidgetRow>
                     </>
                 )}
             </PageContainer>

@@ -72,4 +72,43 @@ export const addObservacao = async (id, texto) =>
         console.error(`Erro ao adicionar observação à ação com ID ${id}:`, error);
         throw error;
     }
+};
+
+export const atualizarQuantidade = async (id, quantidade) =>
+{
+    try
+    {
+        const response = await api.patch(`/acoes/${id}/`, { quantidade });
+        return response.data;
+    } catch (error)
+    {
+        console.error(`Erro ao atualizar quantidade da ação com ID ${id}:`, error);
+        throw error;
+    }
+};
+
+export const deletarObservacao = async (id) =>
+{
+    try
+    {
+        const response = await api.delete(`/observacoes/${id}/delete/`);
+        return response.data;
+    } catch (error)
+    {
+        console.error(`Erro ao deletar observação com ID ${id}:`, error);
+        throw error;
+    }
+};
+
+export const atualizarObservacao = async (id, texto) =>
+{
+    try
+    {
+        const response = await api.put(`/observacoes/${id}/`, { texto });
+        return response.data;
+    } catch (error)
+    {
+        console.error(`Erro ao atualizar observação com ID ${id}:`, error);
+        throw error;
+    }
 }; 

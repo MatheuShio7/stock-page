@@ -1,103 +1,81 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Container = styled.div`
-  background-color: white;
+  background-color: #171A23;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   margin-bottom: 30px;
 `;
 
 const Title = styled.h3`
   font-size: 18px;
   margin: 0 0 20px;
+  color: #FFFFFF;
 `;
 
-const Table = styled.table`
+const ChartContainer = styled.div`
+  height: 300px;
   width: 100%;
-  border-collapse: collapse;
 `;
 
-const TableHeader = styled.thead`
-  background-color: #F7F9FC;
+const CustomTooltip = styled.div`
+  background-color: #232631;
+  border: 1px solid #333;
+  padding: 10px;
+  border-radius: 4px;
+  color: white;
 `;
 
-const TableHeaderCell = styled.th`
-  padding: 12px 15px;
-  text-align: left;
-  font-weight: bold;
-  color: #5A6A7A;
-  border-bottom: 1px solid #E0E0E0;
-`;
-
-const TableBody = styled.tbody``;
-
-const TableRow = styled.tr`
-  &:hover {
-    background-color: #F7F9FC;
-  }
-`;
-
-const TableCell = styled.td`
-  padding: 12px 15px;
-  border-bottom: 1px solid #E0E0E0;
-`;
-
-const EmptyMessage = styled.div`
-  padding: 20px;
-  text-align: center;
-  color: #5A6A7A;
-`;
-
-const DividendHistory = ({ dividends }) =>
+const DividendHistory = () =>
 {
-    const formatDate = (dateString) =>
+  // Dados com valores quebrados para o histograma
+  const data = [
+    { x: '0.25', frequency: 1.5 },
+    { x: '0.75', frequency: 2.3 },
+    { x: '1.25', frequency: 3.2 },
+    { x: '1.75', frequency: 4.7 },
+    { x: '2.25', frequency: 3.5 },
+    { x: '2.75', frequency: 2.8 },
+    { x: '3.25', frequency: 2.1 },
+    { x: '3.75', frequency: 0.9 }
+  ];
+
+  const renderTooltip = ({ active, payload }) =>
+  {
+    if (active && payload && payload.length)
     {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('pt-BR');
-    };
+      return (
+        <CustomTooltip>
+          <p>{`Valor: R$ ${payload[0].payload.x}`}</p>
+        </CustomTooltip>
+      );
+    }
+    return null;
+  };
 
-    const formatCurrency = (value) =>
-    {
-        return new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-            minimumFractionDigits: 4,
-            maximumFractionDigits: 4
-        }).format(value);
-    };
-
-    return (
-        <Container>
-            <Title>Histórico de Proventos</Title>
-
-            {dividends && dividends.length > 0 ? (
-                <Table>
-                    <TableHeader>
-                        <tr>
-                            <TableHeaderCell>Data</TableHeaderCell>
-                            <TableHeaderCell>Tipo</TableHeaderCell>
-                            <TableHeaderCell>Valor</TableHeaderCell>
-                            <TableHeaderCell>Total</TableHeaderCell>
-                        </tr>
-                    </TableHeader>
-                    <TableBody>
-                        {dividends.map((dividend, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{formatDate(dividend.date)}</TableCell>
-                                <TableCell>Dividendo</TableCell>
-                                <TableCell>{formatCurrency(dividend.value)}</TableCell>
-                                <TableCell>R$ 0,00</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            ) : (
-                <EmptyMessage>Não há proventos recentes para esta ação.</EmptyMessage>
-            )}
-        </Container>
-    );
+  return (
+    <Container>
+      <Title>Histórico de Proventos</Title>
+      <ChartContainer>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
+            <XAxis
+              dataKey="x"
+              stroke="#999"
+              tickFormatter={(value) => `R$${value}`}
+            />
+            <YAxis stroke="#999" />
+            <Tooltip content={renderTooltip} />
+            <Bar dataKey="frequency" fill="#FF5722" />
+          </BarChart>
+        </ResponsiveContainer>
+      </ChartContainer>
+    </Container>
+  );
 };
 
 export default DividendHistory; 

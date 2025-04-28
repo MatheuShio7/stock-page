@@ -6,7 +6,7 @@ import Header from '../components/Header/Header';
 const LayoutContainer = styled.div`
   display: flex;
   min-height: 100vh;
-  background-color: #F7F9FC;
+  background-color: #0D0F14;
 `;
 
 const MainContent = styled.div`
@@ -23,17 +23,17 @@ const ContentContainer = styled.div`
 
 const MainLayout = ({ children }) =>
 {
-    return (
-        <LayoutContainer>
-            <Sidebar />
-            <MainContent>
-                <Header />
-                <ContentContainer>
-                    {children}
-                </ContentContainer>
-            </MainContent>
-        </LayoutContainer>
-    );
+  return (
+    <LayoutContainer>
+      <Sidebar />
+      <MainContent>
+        <Header />
+        <ContentContainer>
+          {children}
+        </ContentContainer>
+      </MainContent>
+    </LayoutContainer>
+  );
 };
 
 export default MainLayout; 

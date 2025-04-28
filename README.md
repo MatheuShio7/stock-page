@@ -41,12 +41,39 @@ O backend estará disponível em: http://localhost:8000/
 
 ### Frontend
 
-O desenvolvimento do frontend será feito em uma próxima etapa, utilizando React para consumir a API do backend e implementar a interface conforme as imagens de referência.
+1. Navegue até a pasta frontend:
+   ```
+   cd frontend
+   ```
+
+2. Instale as dependências:
+   ```
+   npm install
+   ```
+
+3. Inicie o servidor de desenvolvimento:
+   ```
+   npm start
+   ```
+
+O frontend estará disponível em: http://localhost:3000/
+
+## Tecnologias Utilizadas
+
+- **Backend**: Django, Django REST Framework, BeautifulSoup4 para web scraping
+- **Frontend**: React, Styled Components, Recharts
+
+## Recursos
+
+- Visualização em tempo real dos dados da ação PETR4 obtidos via web scraping do Google Finance
+- Gráficos interativos para histórico de preços (dados simulados para o protótipo)
+- Tabela de proventos (dados simulados para o protótipo)
+- Sistema de observações para registrar análises sobre a ação
 
 ## API Endpoints
 
 - `GET /api/acoes/` - Lista todas as ações
-- `GET /api/acoes/{id}/` - Detalhes de uma ação específica
-- `GET /api/acoes/{id}/info/` - Informações detalhadas da ação (dados do Yahoo Finance)
-- `GET /api/acoes/{id}/observacoes/` - Lista todas as observações de uma ação
-- `POST /api/acoes/{id}/adicionar_observacao/` - Adiciona uma observação à ação 
+- `GET /api/acoes/1/` - Detalhes da ação PETR4
+- `GET /api/acoes/1/info/` - Informações detalhadas da ação (dados do Google Finance via web scraping)
+- `GET /api/acoes/1/observacoes/` - Lista todas as observações da ação
+- `POST /api/acoes/1/adicionar_observacao/` - Adiciona uma observação à ação 

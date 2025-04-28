@@ -41,9 +41,9 @@ O frontend estará disponível em: http://localhost:3000
 
 ## Funcionalidades
 
-- Visualização das informações da ação PETR4
-- Gráfico de preços históricos
-- Visualização de proventos
+- Visualização das informações da ação PETR4 (dados obtidos do Google Finance via backend)
+- Gráfico de preços históricos (dados simulados para o protótipo)
+- Visualização de proventos (dados simulados para o protótipo)
 - Adição e visualização de observações
 
 ## Observações
